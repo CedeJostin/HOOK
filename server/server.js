@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(cors({
-  origin: 'https://hook-rljwpi22m-cedejostins-projects.vercel.app', // Cambia esto al dominio de tu frontend
+  origin: 'https://hook-snowy.vercel.app', // Cambia esto al dominio de tu frontend
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
   allowedHeaders: 'Content-Type,Authorization'
 }));
