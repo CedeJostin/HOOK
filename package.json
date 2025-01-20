@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "dev": "node api/receive-message.js",
+    "build": "echo 'No build step required'",
+    "start": "node api/receive-message.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "http-proxy-middleware": "^3.0.3"
+  }
+}

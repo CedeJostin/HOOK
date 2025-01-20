@@ -1,36 +1,36 @@
 function toggleChat() {
-    const chatContainer = document.getElementById('chatContainer');
-    chatContainer.classList.toggle('show');
+  const chatContainer = document.getElementById('chatContainer');
+  chatContainer.classList.toggle('show');
+}
+
+function addMessageToChat(message, isUser = true) {
+  const messages = document.getElementById('chatMessages');
+  const messageDiv = document.createElement('div');
+  messageDiv.style.marginBottom = '10px';
+  messageDiv.textContent = message;
+  messageDiv.className = isUser ? 'user-message' : 'bot-message';
+  messages.appendChild(messageDiv);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function showTypingIndicator() {
+  const messages = document.getElementById('chatMessages');
+  const typingIndicator = document.createElement('div');
+  typingIndicator.id = 'typingIndicator';
+  typingIndicator.textContent = 'Escribiendo...';
+  messages.appendChild(typingIndicator);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  const typingIndicator = document.getElementById('typingIndicator');
+  if (typingIndicator) {
+    typingIndicator.remove();
   }
-  
-  function addMessageToChat(message, isUser = true) {
-    const messages = document.getElementById('chatMessages');
-    const messageDiv = document.createElement('div');
-    messageDiv.style.marginBottom = '10px';
-    messageDiv.textContent = message;
-    messageDiv.className = isUser ? 'user-message' : 'bot-message';
-    messages.appendChild(messageDiv);
-    messages.scrollTop = messages.scrollHeight;
-  }
-  
-  function showTypingIndicator() {
-    const messages = document.getElementById('chatMessages');
-    const typingIndicator = document.createElement('div');
-    typingIndicator.id = 'typingIndicator';
-    typingIndicator.textContent = 'Escribiendo...';
-    messages.appendChild(typingIndicator);
-    messages.scrollTop = messages.scrollHeight;
-  }
-  
-  function removeTypingIndicator() {
-    const typingIndicator = document.getElementById('typingIndicator');
-    if (typingIndicator) {
-      typingIndicator.remove();
-    }
-  }
-  
- // API URL
-const API_URL = 'https://n8n-g.onrender.com/webhook-test/08ed44bc-955c-46ff-a703-277f5d0a8551'; // Cambia a tu URL desplegada
+}
+
+// API URL
+const API_URL = 'https://n8n-g.onrender.com/webhook-test/08ed44bc-955c-46ff-a703-277f5d0a8551'; // URL del webhook de n8n
 
 // Generar un ID único
 function generateUUID() {
@@ -78,17 +78,16 @@ function initializeChat() {
 // Enviar mensaje a la API
 async function sendMessageToAPI(message) {
   try {
-    const response = await fetch(`${API_URL}/send-message`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message,
-        sessionId: chatSession.sessionId
-      })
+    const response = await axios.post(API_URL, {
+      message,
+      sessionId: chatSession.sessionId
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Origin': 'https://hook-snowy.vercel.app/' // Asegúrate de que este valor coincida con tu dominio frontend
+      }
     });
-    if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-    const data = await response.json();
-    return data.response;
+    return response.data.response;
   } catch (error) {
     console.error('Error al enviar mensaje:', error);
     return 'Lo siento, ocurrió un error al procesar tu mensaje.';
