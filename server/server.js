@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(cors({
-  origin: 'https://hook-rljwpi22m-cedejostins-projects.vercel.app', // Cambia esto al dominio de tu frontend
+  origin: 'https://hook-snowy.vercel.app/', // Cambia esto al dominio de tu frontend
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
   allowedHeaders: 'Content-Type,Authorization,Origin' // Asegúrate de incluir 'Origin' en los encabezados permitidos
 }));
@@ -22,7 +22,13 @@ app.post('/api/webhook', (req, res) => {
 app.post('/api/send-message', (req, res) => {
   const { message, sessionId } = req.body;
   console.log('Message received from frontend:', message);
-  res.status(200).send({ response: 'Message processed' });
+  res.status(200).json({ response: 'Message processed' });
+});
+
+// Manejo de errores básico
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
 app.listen(port, () => {
