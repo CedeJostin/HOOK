@@ -1,10 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const path = require('path');
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
+app.use(cors({
+  origin: 'https://hook-rljwpi22m-cedejostins-projects.vercel.app', // Cambia esto al dominio de tu frontend
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  allowedHeaders: 'Content-Type,Authorization'
+}));
 
 // Endpoint para recibir datos de n8n
 app.post('/api/webhook', (req, res) => {
@@ -18,14 +23,6 @@ app.post('/api/send-message', (req, res) => {
   const { message, sessionId } = req.body;
   console.log('Message received from frontend:', message);
   res.status(200).send({ response: 'Message processed' });
-});
-
-// Servir archivos estáticos del frontend
-app.use(express.static(path.join(__dirname, '../front-end')));
-
-// Manejar todas las demás rutas para servir el frontend
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../front-end/index.html'));
 });
 
 app.listen(port, () => {

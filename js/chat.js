@@ -29,8 +29,8 @@ function toggleChat() {
     }
   }
   
-  // API URL
-const API_URL = 'https://n8n-g.onrender.com/webhook-test/08ed44bc-955c-46ff-a703-277f5d0a8551'; // Cambia a tu URL desplegada
+ // API URL
+const API_URL = 'https://hook-theta-sepia.vercel.app/api'; // Cambia a tu URL desplegada
 
 // Generar un ID único
 function generateUUID() {
